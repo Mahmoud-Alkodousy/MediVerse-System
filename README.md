@@ -50,7 +50,3 @@ The database follows a modular structure:
 - `alerts` → predictive model outputs  
 - `staff` → doctors, nurses, admin roles  
 - `resources` → hospital equipment, rooms, beds  
-
-*(You can include your ERD image here)*  
-```markdown
-![ERD](assets/erd.png)
