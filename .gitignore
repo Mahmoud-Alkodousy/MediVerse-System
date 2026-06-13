@@ -1,0 +1,33 @@
+# Virtual Environment
+venv/
+.venv/
+env/
+ENV/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environment variables
+.env
+
+# Database
+*.db
+*.sqlite3
+
+# Temp
+temp_uploads/
+*.log
+
+# IDE
+.vscode/
+.idea/
+
+# Models (large files)
+models/auraface/
+
+# OS
+.DS_Store
+Thumbs.db

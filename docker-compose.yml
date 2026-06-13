@@ -1,0 +1,49 @@
+# ══════════════════════════════════════════════════════════════
+#  MediVerse - Docker Compose
+#  docker-compose up --build
+# ══════════════════════════════════════════════════════════════
+
+services:
+  # ── SQL Server Database ──
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: mediverse-db
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "${DB_SA_PASSWORD:-MediVerse@2026!}"
+      MSSQL_PID: "Express"
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql_data:/var/opt/mssql
+    restart: unless-stopped
+    healthcheck:
+      test: /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "${DB_SA_PASSWORD:-MediVerse@2026!}" -Q "SELECT 1" -C -b
+      interval: 15s
+      timeout: 10s
+      retries: 5
+
+  # ── MediVerse API ──
+  api:
+    build: .
+    container_name: mediverse-api
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      DATABASE_SERVER: "mssql"
+      DATABASE_USER: "sa"
+      DATABASE_PASSWORD: "${DB_SA_PASSWORD:-MediVerse@2026!}"
+      DATABASE_NAME: "MediVerse_System"
+      DATABASE_DRIVER: "ODBC Driver 17 for SQL Server"
+    depends_on:
+      mssql:
+        condition: service_healthy
+    volumes:
+      - ./medical_files:/app/medical_files
+      - ./temp_uploads:/app/temp_uploads
+    restart: unless-stopped
+
+volumes:
+  mssql_data:

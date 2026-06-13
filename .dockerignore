@@ -1,0 +1,11 @@
+__pycache__
+*.pyc
+*.pyo
+.env
+.git
+.gitignore
+*.md
+test_*.py
+regenerate_embeddings.py
+temp_uploads/*
+medical_files/*
